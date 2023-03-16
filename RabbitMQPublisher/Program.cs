@@ -6,11 +6,11 @@ namespace RabbitMQPublisher
 {
     public static class Program
     {
-        private static string _vhost = "microhost";
-        private static string _hostName = "83.229.84.17";
+        private static string _vhost = "myvirtualhost";
+        private static string _hostName = "myhost"; // Ip or Domain
         private static int _port = 5672;
-        private static string _username = "ascendanceadmin";
-        private static string _password = "apollo1150";
+        private static string _username = "myusername";
+        private static string _password = "mypassword";
         private static ConnectionFactory _connectionFactory = new ConnectionFactory()
         {
             HostName = _hostName,
