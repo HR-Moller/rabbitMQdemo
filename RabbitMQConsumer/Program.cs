@@ -35,30 +35,21 @@ namespace RabbitMQConsumer
             _channel.QueueDeclare(_queue, false, false, false);
             _channel.QueueBind(_queue, _exchange, "");
             string message = "";
-            bool _isprinted = false;
 
             Console.WriteLine($"Connected to virtualhost: {_vhost}");
             Console.WriteLine($"Using echange: {_exchange}");
             Console.WriteLine($"Reading from Queue: {_queue}");
+            _consumer.Received += (model, ea) =>
+            {
+                byte[] body = ea.Body.ToArray();
+                message = Encoding.UTF8.GetString(body);
+
+                Console.WriteLine($"Received the folllowing message: -- {message} -- on Queue: {_queue} at {DateTime.Now}");
+            };
 
             do
             {
-                _consumer.Received += (model, ea) =>
-                {
-                    byte[] body = ea.Body.ToArray();
-                    message = Encoding.UTF8.GetString(body);
-
-                    if (!_isprinted)
-                    {
-                        Console.WriteLine($"Received the folllowing message: -- {message} -- on Queue: {_queue} at {DateTime.Now}");
-                        _isprinted = true;
-                    }
-                };
-
                 _channel.BasicConsume(_queue, true, _consumer);
-                _isprinted = false;
-                //Console.ReadKey();
-
 
             }while(true);
         }
